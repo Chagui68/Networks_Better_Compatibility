@@ -1,6 +1,6 @@
 package io.github.sefiraat.networks.utils;
 
-import de.jeff_media.morepersistentdatatypes.DataType;
+import com.jeff_media.morepersistentdatatypes.DataType;
 
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NetworkNode;
@@ -25,7 +25,8 @@ import javax.annotation.Nonnull;
 
 public class NetworkUtils {
 
-    public static void applyConfig(@Nonnull NetworkDirectional directional, @Nonnull BlockMenu blockMenu, @Nonnull Player player) {
+    public static void applyConfig(@Nonnull NetworkDirectional directional, @Nonnull BlockMenu blockMenu,
+            @Nonnull Player player) {
         ItemStack itemStack = player.getInventory().getItemInOffHand();
 
         if (SlimefunItem.getByItem(itemStack) instanceof NetworkConfigurator) {
@@ -33,7 +34,8 @@ public class NetworkUtils {
         }
     }
 
-    public static void applyConfig(@Nonnull NetworkDirectional directional, @Nonnull ItemStack itemStack, @Nonnull BlockMenu blockMenu, @Nonnull Player player) {
+    public static void applyConfig(@Nonnull NetworkDirectional directional, @Nonnull ItemStack itemStack,
+            @Nonnull BlockMenu blockMenu, @Nonnull Player player) {
         final ItemMeta itemMeta = itemStack.getItemMeta();
         final ItemStack[] templateStacks = DataTypeMethods.getCustom(itemMeta, Keys.ITEM, DataType.ITEM_STACK_ARRAY);
         final String string = DataTypeMethods.getCustom(itemMeta, Keys.FACE, DataType.STRING);
@@ -45,7 +47,6 @@ public class NetworkUtils {
 
         directional.setDirection(blockMenu, BlockFace.valueOf(string));
         player.sendMessage(Theme.ERROR + "Direction: " + Theme.PASSIVE + "Successfully applied");
-
 
         if (directional.getItemSlots().length > 0) {
             for (int slot : directional.getItemSlots()) {
@@ -67,16 +68,19 @@ public class NetworkUtils {
                             final ItemStack stackClone = StackUtils.getAsQuantity(stack, 1);
                             stack.setAmount(stack.getAmount() - 1);
                             blockMenu.replaceExistingItem(directional.getItemSlots()[i], stackClone);
-                            player.sendMessage(Theme.SUCCESS + "Item [" + i + "]: " + Theme.PASSIVE + "Item added into filter");
+                            player.sendMessage(
+                                    Theme.SUCCESS + "Item [" + i + "]: " + Theme.PASSIVE + "Item added into filter");
                             worked = true;
                             break;
                         }
                     }
                     if (!worked) {
-                        player.sendMessage(Theme.WARNING + "Item [" + i + "]: " + Theme.PASSIVE + "Not enough items to fill filter");
+                        player.sendMessage(Theme.WARNING + "Item [" + i + "]: " + Theme.PASSIVE
+                                + "Not enough items to fill filter");
                     }
                 } else if (directional instanceof NetworkPusher) {
-                    player.sendMessage(Theme.WARNING + "Item [" + i + "]: " + Theme.PASSIVE + "No item in stored config");
+                    player.sendMessage(
+                            Theme.WARNING + "Item [" + i + "]: " + Theme.PASSIVE + "No item in stored config");
                 }
                 i++;
             }

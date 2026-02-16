@@ -123,7 +123,7 @@ public class NetworkRoot extends NetworkNode {
             for (int x = 0; x <= 1; x++) {
                 for (int y = 0; y <= 1; y++) {
                     for (int z = 0; z <= 1; z++) {
-                        loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc.clone().add(x, y, z), 0);
+                        loc.getWorld().spawnParticle(Particle.EXPLOSION, loc.clone().add(x, y, z), 0);
                     }
                 }
             }
@@ -342,7 +342,7 @@ public class NetworkRoot extends NetworkNode {
             final SlimefunItem slimefunItem = BlockStorage.check(testLocation);
 
             if (Networks.getSupportedPluginManager()
-                .isInfinityExpansion() && slimefunItem instanceof StorageUnit unit) {
+                    .isInfinityExpansion() && slimefunItem instanceof StorageUnit unit) {
                 final BlockMenu menu = BlockStorage.getInventory(testLocation);
                 final InfinityBarrel infinityBarrel = getInfinityBarrel(menu, unit);
                 if (infinityBarrel != null) {
@@ -381,7 +381,8 @@ public class NetworkRoot extends NetworkNode {
             return null;
         }
 
-        final io.github.mooy1.infinityexpansion.items.storage.StorageCache cache = storageUnit.getCache(blockMenu.getLocation());
+        final io.github.mooy1.infinityexpansion.items.storage.StorageCache cache = storageUnit
+                .getCache(blockMenu.getLocation());
 
         if (cache == null) {
             return null;
@@ -391,11 +392,10 @@ public class NetworkRoot extends NetworkNode {
         clone.setAmount(1);
 
         return new InfinityBarrel(
-            blockMenu.getLocation(),
-            clone,
-            storedInt + itemStack.getAmount(),
-            cache
-        );
+                blockMenu.getLocation(),
+                clone,
+                storedInt + itemStack.getAmount(),
+                cache);
     }
 
     @Nullable
@@ -423,10 +423,9 @@ public class NetworkRoot extends NetworkNode {
         clone.setAmount(1);
 
         return new NetworkStorage(
-            blockMenu.getLocation(),
-            clone,
-            storedInt
-        );
+                blockMenu.getLocation(),
+                clone,
+                storedInt);
     }
 
     @Nonnull
@@ -474,7 +473,8 @@ public class NetworkRoot extends NetworkNode {
      * Deep Storages (Barrels)
      *
      * @param request The {@link ItemRequest} being requested from the Network
-     * @return The {@link ItemStack} matching the request with as many as could be found. Null if none.
+     * @return The {@link ItemStack} matching the request with as many as could be
+     *         found. Null if none.
      */
     @Nullable
     public ItemStack getItemStack(@Nonnull ItemRequest request) {
@@ -484,9 +484,8 @@ public class NetworkRoot extends NetworkNode {
         for (BlockMenu blockMenu : getCellMenus()) {
             for (ItemStack itemStack : blockMenu.getContents()) {
                 if (itemStack == null
-                    || itemStack.getType() == Material.AIR
-                    || !StackUtils.itemsMatch(request, itemStack, true)
-                ) {
+                        || itemStack.getType() == Material.AIR
+                        || !StackUtils.itemsMatch(request, itemStack, true)) {
                     continue;
                 }
 
@@ -507,7 +506,8 @@ public class NetworkRoot extends NetworkNode {
                 }
 
                 if (request.getAmount() <= itemStack.getAmount()) {
-                    // We can't take more than this stack. Level to request amount, remove items and then return
+                    // We can't take more than this stack. Level to request amount, remove items and
+                    // then return
                     stackToReturn.setAmount(stackToReturn.getAmount() + request.getAmount());
                     itemStack.setAmount(itemStack.getAmount() - request.getAmount());
                     return stackToReturn;
@@ -526,10 +526,9 @@ public class NetworkRoot extends NetworkNode {
             for (int slot : slots) {
                 final ItemStack itemStack = blockMenu.getItemInSlot(slot);
                 if (itemStack == null || itemStack.getType() == Material.AIR || !StackUtils.itemsMatch(
-                    request,
-                    itemStack,
-                    true
-                )) {
+                        request,
+                        itemStack,
+                        true)) {
                     continue;
                 }
 
@@ -562,9 +561,8 @@ public class NetworkRoot extends NetworkNode {
         for (BlockMenu blockMenu : getGreedyBlocks()) {
             final ItemStack itemStack = blockMenu.getItemInSlot(NetworkGreedyBlock.INPUT_SLOT);
             if (itemStack == null
-                || itemStack.getType() == Material.AIR
-                || !StackUtils.itemsMatch(request, itemStack, true)
-            ) {
+                    || itemStack.getType() == Material.AIR
+                    || !StackUtils.itemsMatch(request, itemStack, true)) {
                 continue;
             }
 
@@ -585,7 +583,8 @@ public class NetworkRoot extends NetworkNode {
             }
 
             if (request.getAmount() <= itemStack.getAmount()) {
-                // We can't take more than this stack. Level to request amount, remove items and then return
+                // We can't take more than this stack. Level to request amount, remove items and
+                // then return
                 stackToReturn.setAmount(stackToReturn.getAmount() + request.getAmount());
                 itemStack.setAmount(itemStack.getAmount() - request.getAmount());
                 return stackToReturn;
@@ -658,9 +657,8 @@ public class NetworkRoot extends NetworkNode {
         for (BlockMenu blockMenu : getCellMenus()) {
             for (ItemStack itemStack : blockMenu.getContents()) {
                 if (itemStack == null
-                    || itemStack.getType() == Material.AIR
-                    || !StackUtils.itemsMatch(request, itemStack, true)
-                ) {
+                        || itemStack.getType() == Material.AIR
+                        || !StackUtils.itemsMatch(request, itemStack, true)) {
                     continue;
                 }
 
@@ -679,9 +677,8 @@ public class NetworkRoot extends NetworkNode {
             for (int slot : slots) {
                 final ItemStack itemStack = blockMenu.getItemInSlot(slot);
                 if (itemStack == null
-                    || itemStack.getType() == Material.AIR
-                    || !StackUtils.itemsMatch(request, itemStack, true)
-                ) {
+                        || itemStack.getType() == Material.AIR
+                        || !StackUtils.itemsMatch(request, itemStack, true)) {
                     continue;
                 }
 
@@ -720,9 +717,8 @@ public class NetworkRoot extends NetworkNode {
         for (BlockMenu blockMenu : getGreedyBlocks()) {
             final ItemStack itemStack = blockMenu.getItemInSlot(NetworkGreedyBlock.INPUT_SLOT);
             if (itemStack == null
-                || itemStack.getType() == Material.AIR
-                || !StackUtils.itemsMatch(request, itemStack, true)
-            ) {
+                    || itemStack.getType() == Material.AIR
+                    || !StackUtils.itemsMatch(request, itemStack, true)) {
                 continue;
             }
 
@@ -763,7 +759,8 @@ public class NetworkRoot extends NetworkNode {
                 itemStack.setAmount(itemStackAmount + amountToAdd);
                 incoming.setAmount(incomingStackAmount - amountToAdd);
             }
-            // Given we have found a match, it doesn't matter if the item moved or not, we will not bring it in
+            // Given we have found a match, it doesn't matter if the item moved or not, we
+            // will not bring it in
             return;
         }
 
@@ -781,7 +778,8 @@ public class NetworkRoot extends NetworkNode {
         }
 
         // Then run for matching items in cells
-        // Prepare a fallback menu and slot. This way we don't have to scan more than once
+        // Prepare a fallback menu and slot. This way we don't have to scan more than
+        // once
         BlockMenu fallbackBlockMenu = null;
         int fallBackSlot = 0;
 
@@ -854,7 +852,7 @@ public class NetworkRoot extends NetworkNode {
                 }
                 final int toRemove = (int) Math.min(power - removed, charge);
                 powerNode.removeCharge(node, toRemove);
-                this.rootPower -= power;
+                this.rootPower -= toRemove;
                 removed = removed + toRemove;
             }
             if (removed >= power) {

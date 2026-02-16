@@ -1,6 +1,6 @@
 package io.github.sefiraat.networks.slimefun.tools;
 
-import de.jeff_media.morepersistentdatatypes.DataType;
+import com.jeff_media.morepersistentdatatypes.DataType;
 import io.github.sefiraat.networks.slimefun.network.NetworkWirelessReceiver;
 import io.github.sefiraat.networks.slimefun.network.NetworkWirelessTransmitter;
 import io.github.sefiraat.networks.utils.Keys;
@@ -31,43 +31,42 @@ public class NetworkWirelessConfigurator extends SlimefunItem {
     private static final NamespacedKey TARGET_LOCATION = Keys.newKey("target-location");
 
     public NetworkWirelessConfigurator(ItemGroup itemGroup,
-                                       SlimefunItemStack item,
-                                       RecipeType recipeType,
-                                       ItemStack[] recipe
-    ) {
+            SlimefunItemStack item,
+            RecipeType recipeType,
+            ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
         addItemHandler(
-            new ItemUseHandler() {
-                @Override
-                public void onRightClick(PlayerRightClickEvent e) {
-                    final Player player = e.getPlayer();
-                    final Optional<Block> optional = e.getClickedBlock();
-                    if (optional.isPresent()) {
-                        final Block block = optional.get();
-                        final SlimefunItem slimefunItem = BlockStorage.check(block);
-                        if (Slimefun.getProtectionManager().hasPermission(player, block, Interaction.INTERACT_BLOCK)) {
-                            final ItemStack heldItem = player.getInventory().getItemInMainHand();
-                            final BlockMenu blockMenu = BlockStorage.getInventory(block);
-                            if (slimefunItem instanceof NetworkWirelessTransmitter transmitter && player.isSneaking()) {
-                                setTransmitter(transmitter, heldItem, blockMenu, player);
-                            } else if (slimefunItem instanceof NetworkWirelessReceiver && !player.isSneaking()) {
-                                setReceiver(heldItem, blockMenu, player);
+                new ItemUseHandler() {
+                    @Override
+                    public void onRightClick(PlayerRightClickEvent e) {
+                        final Player player = e.getPlayer();
+                        final Optional<Block> optional = e.getClickedBlock();
+                        if (optional.isPresent()) {
+                            final Block block = optional.get();
+                            final SlimefunItem slimefunItem = BlockStorage.check(block);
+                            if (Slimefun.getProtectionManager().hasPermission(player, block,
+                                    Interaction.INTERACT_BLOCK)) {
+                                final ItemStack heldItem = player.getInventory().getItemInMainHand();
+                                final BlockMenu blockMenu = BlockStorage.getInventory(block);
+                                if (slimefunItem instanceof NetworkWirelessTransmitter transmitter
+                                        && player.isSneaking()) {
+                                    setTransmitter(transmitter, heldItem, blockMenu, player);
+                                } else if (slimefunItem instanceof NetworkWirelessReceiver && !player.isSneaking()) {
+                                    setReceiver(heldItem, blockMenu, player);
+                                }
+                            } else {
+                                player.sendMessage(Theme.ERROR + "Must target a Network Wireless block.");
                             }
-                        } else {
-                            player.sendMessage(Theme.ERROR + "Must target a Network Wireless block.");
                         }
+                        e.cancel();
                     }
-                    e.cancel();
-                }
-            }
-        );
+                });
     }
 
     private void setTransmitter(@Nonnull NetworkWirelessTransmitter transmitter,
-                                @Nonnull ItemStack itemStack,
-                                @Nonnull BlockMenu blockMenu,
-                                @Nonnull Player player
-    ) {
+            @Nonnull ItemStack itemStack,
+            @Nonnull BlockMenu blockMenu,
+            @Nonnull Player player) {
         final ItemMeta itemMeta = itemStack.getItemMeta();
         final Location location = PersistentDataAPI.get(itemMeta, TARGET_LOCATION, DataType.LOCATION);
 

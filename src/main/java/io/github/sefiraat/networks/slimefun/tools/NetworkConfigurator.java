@@ -1,6 +1,6 @@
 package io.github.sefiraat.networks.slimefun.tools;
 
-import de.jeff_media.morepersistentdatatypes.DataType;
+import com.jeff_media.morepersistentdatatypes.DataType;
 import io.github.sefiraat.networks.slimefun.network.NetworkDirectional;
 import io.github.sefiraat.networks.slimefun.network.NetworkPusher;
 import io.github.sefiraat.networks.utils.Keys;
@@ -35,34 +35,33 @@ public class NetworkConfigurator extends SlimefunItem {
     public NetworkConfigurator(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
         addItemHandler(
-            new ItemUseHandler() {
-                @Override
-                public void onRightClick(PlayerRightClickEvent e) {
-                    final Player player = e.getPlayer();
-                    final Optional<Block> optional = e.getClickedBlock();
-                    if (optional.isPresent()) {
-                        final Block block = optional.get();
-                        final SlimefunItem slimefunItem = BlockStorage.check(block);
-                        if (Slimefun.getProtectionManager().hasPermission(player, block, Interaction.INTERACT_BLOCK)
-                            && slimefunItem instanceof NetworkDirectional directional
-                        ) {
-                            final BlockMenu blockMenu = BlockStorage.getInventory(block);
-                            if (player.isSneaking()) {
-                                setConfigurator(directional, e.getItem(), blockMenu, player);
+                new ItemUseHandler() {
+                    @Override
+                    public void onRightClick(PlayerRightClickEvent e) {
+                        final Player player = e.getPlayer();
+                        final Optional<Block> optional = e.getClickedBlock();
+                        if (optional.isPresent()) {
+                            final Block block = optional.get();
+                            final SlimefunItem slimefunItem = BlockStorage.check(block);
+                            if (Slimefun.getProtectionManager().hasPermission(player, block, Interaction.INTERACT_BLOCK)
+                                    && slimefunItem instanceof NetworkDirectional directional) {
+                                final BlockMenu blockMenu = BlockStorage.getInventory(block);
+                                if (player.isSneaking()) {
+                                    setConfigurator(directional, e.getItem(), blockMenu, player);
+                                } else {
+                                    NetworkUtils.applyConfig(directional, e.getItem(), blockMenu, player);
+                                }
                             } else {
-                                NetworkUtils.applyConfig(directional, e.getItem(), blockMenu, player);
+                                player.sendMessage(Theme.ERROR + "Must target a directional Networks interface.");
                             }
-                        } else {
-                            player.sendMessage(Theme.ERROR + "Must target a directional Networks interface.");
                         }
+                        e.cancel();
                     }
-                    e.cancel();
-                }
-            }
-        );
+                });
     }
 
-    private void setConfigurator(@Nonnull NetworkDirectional directional, @Nonnull ItemStack itemStack, @Nonnull BlockMenu blockMenu, @Nonnull Player player) {
+    private void setConfigurator(@Nonnull NetworkDirectional directional, @Nonnull ItemStack itemStack,
+            @Nonnull BlockMenu blockMenu, @Nonnull Player player) {
         final BlockFace blockFace = NetworkDirectional.getSelectedFace(blockMenu.getLocation());
 
         if (blockFace == null) {

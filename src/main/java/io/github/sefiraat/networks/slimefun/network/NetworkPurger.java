@@ -35,14 +35,14 @@ import java.util.List;
 
 public class NetworkPurger extends NetworkObject {
 
-    private static final int[] BACKGROUND_SLOTS = {0, 1, 2, 6, 7, 8, 9, 10, 11, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26};
+    private static final int[] BACKGROUND_SLOTS = { 0, 1, 2, 6, 7, 8, 9, 10, 11, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26 };
     private static final int TEST_ITEM_SLOT = 13;
-    private static final int[] TEST_ITEM_BACKDROP = {3, 4, 5, 12, 14, 21, 22, 23};
+    private static final int[] TEST_ITEM_BACKDROP = { 3, 4, 5, 12, 14, 21, 22, 23 };
 
     private static final CustomItemStack TEST_BACKDROP_STACK = new CustomItemStack(
-        Material.GREEN_STAINED_GLASS_PANE,
-        Theme.SUCCESS + "Purge Item Matching"
-    );
+            Material.GREEN_STAINED_GLASS_PANE,
+            Theme.SUCCESS + "Purge Item Matching");
 
     private final ItemSetting<Integer> tickRate;
 
@@ -54,37 +54,36 @@ public class NetworkPurger extends NetworkObject {
         this.getSlotsToDrop().add(TEST_ITEM_SLOT);
 
         addItemHandler(
-            new BlockTicker() {
+                new BlockTicker() {
 
-                private int tick = 1;
+                    private int tick = 1;
 
-                @Override
-                public boolean isSynchronized() {
-                    return false;
-                }
-
-                @Override
-                public void tick(Block block, SlimefunItem item, Config data) {
-                    if (tick <= 1) {
-                        final BlockMenu blockMenu = BlockStorage.getInventory(block);
-                        addToRegistry(block);
-                        tryKillItem(blockMenu);
+                    @Override
+                    public boolean isSynchronized() {
+                        return false;
                     }
-                }
 
-                @Override
-                public void uniqueTick() {
-                    tick = tick <= 1 ? tickRate.getValue() : tick - 1;
-                }
-            },
-            new BlockBreakHandler(true, true) {
-                @Override
-                public void onPlayerBreak(BlockBreakEvent e, ItemStack item, List<ItemStack> drops) {
-                    BlockMenu blockMenu = BlockStorage.getInventory(e.getBlock());
-                    blockMenu.dropItems(blockMenu.getLocation(), TEST_ITEM_SLOT);
-                }
-            }
-        );
+                    @Override
+                    public void tick(Block block, SlimefunItem item, Config data) {
+                        if (tick <= 1) {
+                            final BlockMenu blockMenu = BlockStorage.getInventory(block);
+                            addToRegistry(block);
+                            tryKillItem(blockMenu);
+                        }
+                    }
+
+                    @Override
+                    public void uniqueTick() {
+                        tick = tick <= 1 ? tickRate.getValue() : tick - 1;
+                    }
+                },
+                new BlockBreakHandler(true, true) {
+                    @Override
+                    public void onPlayerBreak(BlockBreakEvent e, ItemStack item, List<ItemStack> drops) {
+                        BlockMenu blockMenu = BlockStorage.getInventory(e.getBlock());
+                        blockMenu.dropItems(blockMenu.getLocation(), TEST_ITEM_SLOT);
+                    }
+                });
     }
 
     private void tryKillItem(@Nonnull BlockMenu blockMenu) {
@@ -109,7 +108,7 @@ public class NetworkPurger extends NetworkObject {
             retrieved.setAmount(0);
             Location location = blockMenu.getLocation().clone().add(0.5, 1.2, 0.5);
             if (definition.getNode().getRoot().isDisplayParticles()) {
-                location.getWorld().spawnParticle(Particle.SMOKE_NORMAL, location, 0, 0, 0.05, 0);
+                location.getWorld().spawnParticle(Particle.SMOKE, location, 0, 0, 0.05, 0);
             }
         }
     }
@@ -127,7 +126,8 @@ public class NetworkPurger extends NetworkObject {
             @Override
             public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
                 return NetworkSlimefunItems.NETWORK_PURGER.canUse(player, false)
-                    && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+                        && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(),
+                                Interaction.INTERACT_BLOCK);
             }
 
             @Override

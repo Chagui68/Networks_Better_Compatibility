@@ -5,7 +5,9 @@ import io.github.sefiraat.networks.managers.ListenerManager;
 import io.github.sefiraat.networks.managers.SupportedPluginManager;
 import io.github.sefiraat.networks.integrations.HudCallbacks;
 import io.github.sefiraat.networks.integrations.NetheoPlants;
+import io.github.sefiraat.networks.network.SupportedRecipes;
 import io.github.sefiraat.networks.slimefun.NetworkSlimefunItems;
+import io.github.sefiraat.networks.slimefun.NetworksSlimefunItemStacks;
 import io.github.sefiraat.networks.slimefun.network.NetworkController;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
@@ -22,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Networks extends JavaPlugin implements SlimefunAddon {
-
 
     private static Networks instance;
 
@@ -58,6 +59,9 @@ public class Networks extends JavaPlugin implements SlimefunAddon {
         this.getCommand("networks").setExecutor(new NetworksMain());
 
         setupMetrics();
+
+        // Initialize recipes after all items are registered
+        SupportedRecipes.setup();
     }
 
     public void tryUpdate() {
@@ -67,7 +71,17 @@ public class Networks extends JavaPlugin implements SlimefunAddon {
     }
 
     public void setupSlimefun() {
+        getLogger().info("[Networks] --- Starting Slimefun Setup (v2.2) ---");
+
+        // Step 1: Initialize ItemStacks
+        NetworksSlimefunItemStacks.setup();
+        getLogger().info("[Networks] NetworksSlimefunItemStacks setup complete.");
+
+        // Step 2: Initialize SlimefunItems
+        getLogger().info("[Networks] Calling NetworkSlimefunItems.setup()...");
         NetworkSlimefunItems.setup();
+        getLogger().info("[Networks] NetworkSlimefunItems setup complete.");
+
         if (supportedPluginManager.isNetheopoiesis()) {
             try {
                 NetheoPlants.setup();

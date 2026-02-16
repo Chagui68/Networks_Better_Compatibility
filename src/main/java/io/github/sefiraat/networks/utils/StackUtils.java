@@ -4,6 +4,7 @@ import io.github.sefiraat.networks.network.stackcaches.ItemStackCache;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
@@ -34,7 +35,10 @@ import java.util.Optional;
 public class StackUtils {
 
     @Nonnull
-    public static ItemStack getAsQuantity(@Nonnull ItemStack itemStack, int amount) {
+    public static ItemStack getAsQuantity(@Nullable ItemStack itemStack, int amount) {
+        if (itemStack == null) {
+            return new ItemStack(Material.AIR);
+        }
         ItemStack clone = itemStack.clone();
         clone.setAmount(amount);
         return clone;
@@ -45,7 +49,8 @@ public class StackUtils {
     }
 
     /**
-     * Checks if items match each other, checks go in order from lightest to heaviest
+     * Checks if items match each other, checks go in order from lightest to
+     * heaviest
      *
      * @param cache     The cached {@link ItemStack} to compare against
      * @param itemStack The {@link ItemStack} being evaluated
@@ -62,12 +67,14 @@ public class StackUtils {
             return false;
         }
 
-        // If either item does not have a meta then either a mismatch or both without meta = vanilla
+        // If either item does not have a meta then either a mismatch or both without
+        // meta = vanilla
         if (!itemStack.hasItemMeta() || !cache.getItemStack().hasItemMeta()) {
             return itemStack.hasItemMeta() == cache.getItemStack().hasItemMeta();
         }
 
-        // Now we need to compare meta's directly - cache is already out, but let's fetch the 2nd meta also
+        // Now we need to compare meta's directly - cache is already out, but let's
+        // fetch the 2nd meta also
         final ItemMeta itemMeta = itemStack.getItemMeta();
         final ItemMeta cachedMeta = cache.getItemMeta();
 
@@ -133,7 +140,6 @@ public class StackUtils {
         return true;
     }
 
-
     public boolean canQuickEscapeMetaVariant(@Nonnull ItemMeta metaOne, @Nonnull ItemMeta metaTwo) {
 
         // Damageable (first as everything can be damageable apparently)
@@ -149,7 +155,7 @@ public class StackUtils {
                 return true;
             }
 
-            if(!instanceOne.hasVariant() || !instanceTwo.hasVariant())
+            if (!instanceOne.hasVariant() || !instanceTwo.hasVariant())
                 return true;
 
             if (instanceOne.getVariant() != instanceTwo.getVariant()) {
@@ -211,7 +217,8 @@ public class StackUtils {
         }
 
         // Enchantment Storage
-        if (metaOne instanceof EnchantmentStorageMeta instanceOne && metaTwo instanceof EnchantmentStorageMeta instanceTwo) {
+        if (metaOne instanceof EnchantmentStorageMeta instanceOne
+                && metaTwo instanceof EnchantmentStorageMeta instanceTwo) {
             if (instanceOne.hasStoredEnchants() != instanceTwo.hasStoredEnchants()) {
                 return true;
             }
@@ -303,7 +310,8 @@ public class StackUtils {
         }
 
         // Fish Bucket
-        if (metaOne instanceof TropicalFishBucketMeta instanceOne && metaTwo instanceof TropicalFishBucketMeta instanceTwo) {
+        if (metaOne instanceof TropicalFishBucketMeta instanceOne
+                && metaTwo instanceof TropicalFishBucketMeta instanceTwo) {
             if (instanceOne.hasVariant() != instanceTwo.hasVariant()) {
                 return true;
             }
@@ -332,7 +340,8 @@ public class StackUtils {
     public static void putOnCooldown(ItemStack itemStack, int durationInSeconds) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta != null) {
-            PersistentDataAPI.setLong(itemMeta, Keys.ON_COOLDOWN, System.currentTimeMillis() + (durationInSeconds * 1000L));
+            PersistentDataAPI.setLong(itemMeta, Keys.ON_COOLDOWN,
+                    System.currentTimeMillis() + (durationInSeconds * 1000L));
             itemStack.setItemMeta(itemMeta);
         }
     }

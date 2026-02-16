@@ -1,6 +1,6 @@
 package io.github.sefiraat.networks.slimefun.tools;
 
-import de.jeff_media.morepersistentdatatypes.DataType;
+import com.jeff_media.morepersistentdatatypes.DataType;
 import io.github.sefiraat.networks.slimefun.network.grid.NetworkGrid;
 import io.github.sefiraat.networks.utils.Keys;
 import io.github.sefiraat.networks.utils.Theme;
@@ -28,43 +28,44 @@ import java.util.Optional;
 public class NetworkRemote extends SlimefunItem {
 
     private static final NamespacedKey KEY = Keys.newKey("location");
-    private static final int[] RANGES = new int[]{
-        150,
-        500,
-        0,
-        -1
+    private static final int[] RANGES = new int[] {
+            150,
+            500,
+            0,
+            -1
     };
 
     private final int range;
 
-    public NetworkRemote(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int range) {
+    public NetworkRemote(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe,
+            int range) {
         super(itemGroup, item, recipeType, recipe);
         this.range = range;
         addItemHandler(
-            new ItemUseHandler() {
-                @Override
-                public void onRightClick(PlayerRightClickEvent e) {
-                    final Player player = e.getPlayer();
-                    if (player.isSneaking()) {
-                        final Optional<Block> optional = e.getClickedBlock();
-                        if (optional.isPresent()) {
-                            final Block block = optional.get();
-                            final SlimefunItem slimefunItem = BlockStorage.check(block);
-                            if (Slimefun.getProtectionManager().hasPermission(player, block, Interaction.INTERACT_BLOCK)
-                                && slimefunItem instanceof NetworkGrid
-                            ) {
-                                setGrid(e.getItem(), block, player);
-                            } else {
-                                player.sendMessage(Theme.ERROR + "Must be set to a Network Grid (not crafting grid).");
+                new ItemUseHandler() {
+                    @Override
+                    public void onRightClick(PlayerRightClickEvent e) {
+                        final Player player = e.getPlayer();
+                        if (player.isSneaking()) {
+                            final Optional<Block> optional = e.getClickedBlock();
+                            if (optional.isPresent()) {
+                                final Block block = optional.get();
+                                final SlimefunItem slimefunItem = BlockStorage.check(block);
+                                if (Slimefun.getProtectionManager().hasPermission(player, block,
+                                        Interaction.INTERACT_BLOCK)
+                                        && slimefunItem instanceof NetworkGrid) {
+                                    setGrid(e.getItem(), block, player);
+                                } else {
+                                    player.sendMessage(
+                                            Theme.ERROR + "Must be set to a Network Grid (not crafting grid).");
+                                }
                             }
+                        } else {
+                            tryOpenGrid(e.getItem(), player, NetworkRemote.this.range);
                         }
-                    } else {
-                        tryOpenGrid(e.getItem(), player, NetworkRemote.this.range);
+                        e.cancel();
                     }
-                    e.cancel();
-                }
-            }
-        );
+                });
     }
 
     public static void setGrid(@Nonnull ItemStack itemStack, @Nonnull Block block, @Nonnull Player player) {
@@ -88,9 +89,8 @@ public class NetworkRemote extends SlimefunItem {
             final boolean sameDimension = location.getWorld().equals(player.getWorld());
 
             if (range == -1
-                || range == 0 && sameDimension
-                || sameDimension && player.getLocation().distance(location) <= range
-            ) {
+                    || range == 0 && sameDimension
+                    || sameDimension && player.getLocation().distance(location) <= range) {
                 openGrid(location, player);
             } else {
                 player.sendMessage(Theme.ERROR + "The bound grid is not within reach.");
@@ -104,8 +104,7 @@ public class NetworkRemote extends SlimefunItem {
         BlockMenu blockMenu = BlockStorage.getInventory(location);
         SlimefunItem slimefunItem = BlockStorage.check(location);
         if (slimefunItem instanceof NetworkGrid
-            && Slimefun.getProtectionManager().hasPermission(player, location, Interaction.INTERACT_BLOCK)
-        ) {
+                && Slimefun.getProtectionManager().hasPermission(player, location, Interaction.INTERACT_BLOCK)) {
             blockMenu.open(player);
         } else {
             player.sendMessage(Theme.ERROR + "The bound grid can no longer be found.");

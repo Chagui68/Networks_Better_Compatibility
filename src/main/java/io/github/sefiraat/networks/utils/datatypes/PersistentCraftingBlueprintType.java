@@ -1,6 +1,6 @@
 package io.github.sefiraat.networks.utils.datatypes;
 
-import de.jeff_media.morepersistentdatatypes.DataType;
+import com.jeff_media.morepersistentdatatypes.DataType;
 import io.github.sefiraat.networks.network.stackcaches.BlueprintInstance;
 import io.github.sefiraat.networks.network.stackcaches.CardInstance;
 import io.github.sefiraat.networks.utils.Keys;
@@ -14,7 +14,8 @@ import javax.annotation.Nonnull;
 
 /**
  * A {@link PersistentDataType} for {@link CardInstance}
- * Creatively thieved from {@see <a href="https://github.com/baked-libs/dough/blob/main/dough-data/src/main/java/io/github/bakedlibs/dough/data/persistent/PersistentUUIDDataType.java">PersistentUUIDDataType}
+ * Creatively thieved from {@see <a href=
+ * "https://github.com/baked-libs/dough/blob/main/dough-data/src/main/java/io/github/bakedlibs/dough/data/persistent/PersistentUUIDDataType.java">PersistentUUIDDataType}
  *
  * @author Sfiguz7
  * @author Walshy
@@ -41,7 +42,8 @@ public class PersistentCraftingBlueprintType implements PersistentDataType<Persi
 
     @Override
     @Nonnull
-    public PersistentDataContainer toPrimitive(@Nonnull BlueprintInstance complex, @Nonnull PersistentDataAdapterContext context) {
+    public PersistentDataContainer toPrimitive(@Nonnull BlueprintInstance complex,
+            @Nonnull PersistentDataAdapterContext context) {
         final PersistentDataContainer container = context.newPersistentDataContainer();
 
         container.set(RECIPE, DataType.ITEM_STACK_ARRAY, complex.getRecipeItems());
@@ -51,7 +53,8 @@ public class PersistentCraftingBlueprintType implements PersistentDataType<Persi
 
     @Override
     @Nonnull
-    public BlueprintInstance fromPrimitive(@Nonnull PersistentDataContainer primitive, @Nonnull PersistentDataAdapterContext context) {
+    public BlueprintInstance fromPrimitive(@Nonnull PersistentDataContainer primitive,
+            @Nonnull PersistentDataAdapterContext context) {
         final ItemStack[] recipe = primitive.get(RECIPE, DataType.ITEM_STACK_ARRAY);
         final ItemStack output = primitive.get(OUTPUT, DataType.ITEM_STACK);
 
