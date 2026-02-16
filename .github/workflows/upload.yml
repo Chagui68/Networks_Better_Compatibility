@@ -23,9 +23,8 @@ jobs:
       - name: Build with Maven
         run: mvn package
 
-      - name: Upload to Builds
-        uses: WalshyDev/blob-builds/gh-action@main
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          project: Networks
-          apiToken: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
-          releaseNotes: ${{ github.event.head_commit.message }}
+          name: Networks-1.20.6
+          path: target/*.jar
