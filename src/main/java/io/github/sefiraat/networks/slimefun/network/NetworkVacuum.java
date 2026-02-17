@@ -38,7 +38,7 @@ import java.util.Optional;
 
 public class NetworkVacuum extends NetworkObject {
 
-    private static final int[] INPUT_SLOTS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+    private static final int[] INPUT_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
     private final ItemSetting<Integer> tickRate;
     private final ItemSetting<Integer> vacuumRange;
@@ -55,31 +55,30 @@ public class NetworkVacuum extends NetworkObject {
         }
 
         addItemHandler(
-            new BlockTicker() {
+                new BlockTicker() {
 
-                private int tick = 1;
+                    private int tick = 1;
 
-                @Override
-                public boolean isSynchronized() {
-                    return false;
-                }
-
-                @Override
-                public void tick(Block block, SlimefunItem item, Config data) {
-                    if (tick <= 1) {
-                        final BlockMenu blockMenu = BlockStorage.getInventory(block);
-                        addToRegistry(block);
-                        tryAddItem(blockMenu);
-                        Bukkit.getScheduler().runTask(Networks.getInstance(), bukkitTask -> findItem(blockMenu));
+                    @Override
+                    public boolean isSynchronized() {
+                        return runSync();
                     }
-                }
 
-                @Override
-                public void uniqueTick() {
-                    tick = tick <= 1 ? tickRate.getValue() : tick - 1;
-                }
-            }
-        );
+                    @Override
+                    public void tick(Block block, SlimefunItem item, Config data) {
+                        if (tick <= 1) {
+                            final BlockMenu blockMenu = BlockStorage.getInventory(block);
+                            addToRegistry(block);
+                            tryAddItem(blockMenu);
+                            Bukkit.getScheduler().runTask(Networks.getInstance(), bukkitTask -> findItem(blockMenu));
+                        }
+                    }
+
+                    @Override
+                    public void uniqueTick() {
+                        tick = tick <= 1 ? tickRate.getValue() : tick - 1;
+                    }
+                });
     }
 
     private void findItem(@Nonnull BlockMenu blockMenu) {
@@ -89,7 +88,7 @@ public class NetworkVacuum extends NetworkObject {
                 final Location location = blockMenu.getLocation().clone().add(0.5, 0.5, 0.5);
                 final int range = this.vacuumRange.getValue();
                 Collection<Entity> items = location.getWorld()
-                    .getNearbyEntities(location, range, range, range, Item.class::isInstance);
+                        .getNearbyEntities(location, range, range, range, Item.class::isInstance);
                 Optional<Entity> optionalEntity = items.stream().findFirst();
                 if (optionalEntity.isEmpty() || !(optionalEntity.get() instanceof Item item)) {
                     return;
@@ -134,8 +133,8 @@ public class NetworkVacuum extends NetworkObject {
             @Override
             public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
                 return NetworkSlimefunItems.NETWORK_VACUUM.canUse(player, false)
-                    && Slimefun.getProtectionManager()
-                    .hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+                        && Slimefun.getProtectionManager()
+                                .hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
             }
 
             @Override

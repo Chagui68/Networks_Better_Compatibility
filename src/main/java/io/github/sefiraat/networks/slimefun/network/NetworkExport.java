@@ -33,21 +33,20 @@ import java.util.List;
 
 public class NetworkExport extends NetworkObject {
 
-    private static final int[] BACKGROUND_SLOTS = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 17, 18, 22, 26, 27, 31, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44};
+    private static final int[] BACKGROUND_SLOTS = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 17, 18, 22, 26, 27, 31, 35, 36,
+            37, 38, 39, 40, 41, 42, 43, 44 };
     private static final int TEST_ITEM_SLOT = 20;
-    private static final int[] TEST_ITEM_BACKDROP = {10, 11, 12, 19, 21, 28, 29, 30};
+    private static final int[] TEST_ITEM_BACKDROP = { 10, 11, 12, 19, 21, 28, 29, 30 };
     private static final int OUTPUT_ITEM_SLOT = 24;
-    private static final int[] OUTPUT_ITEM_BACKDROP = {14, 15, 16, 23, 25, 32, 33, 34};
+    private static final int[] OUTPUT_ITEM_BACKDROP = { 14, 15, 16, 23, 25, 32, 33, 34 };
 
     private static final CustomItemStack TEST_BACKDROP_STACK = new CustomItemStack(
-        Material.GREEN_STAINED_GLASS_PANE,
-        Theme.SUCCESS + "Export Item Matching"
-    );
+            Material.GREEN_STAINED_GLASS_PANE,
+            Theme.SUCCESS + "Export Item Matching");
 
     private static final CustomItemStack OUTPUT_BACKDROP_STACK = new CustomItemStack(
-        Material.ORANGE_STAINED_GLASS_PANE,
-        Theme.SUCCESS + "Output Slot"
-    );
+            Material.ORANGE_STAINED_GLASS_PANE,
+            Theme.SUCCESS + "Output Slot");
 
     private final ItemSetting<Integer> tickRate;
 
@@ -60,38 +59,37 @@ public class NetworkExport extends NetworkObject {
         this.getSlotsToDrop().add(OUTPUT_ITEM_SLOT);
 
         addItemHandler(
-            new BlockTicker() {
+                new BlockTicker() {
 
-                private int tick = 1;
+                    private int tick = 1;
 
-                @Override
-                public boolean isSynchronized() {
-                    return false;
-                }
-
-                @Override
-                public void tick(Block block, SlimefunItem item, Config data) {
-                    if (tick <= 1) {
-                        final BlockMenu blockMenu = BlockStorage.getInventory(block);
-                        addToRegistry(block);
-                        tryFetchItem(blockMenu);
+                    @Override
+                    public boolean isSynchronized() {
+                        return runSync();
                     }
-                }
 
-                @Override
-                public void uniqueTick() {
-                    tick = tick <= 1 ? tickRate.getValue() : tick - 1;
-                }
-            },
-            new BlockBreakHandler(true, true) {
-                @Override
-                public void onPlayerBreak(BlockBreakEvent e, ItemStack item, List<ItemStack> drops) {
-                    BlockMenu blockMenu = BlockStorage.getInventory(e.getBlock());
-                    blockMenu.dropItems(blockMenu.getLocation(), TEST_ITEM_SLOT);
-                    blockMenu.dropItems(blockMenu.getLocation(), OUTPUT_ITEM_SLOT);
-                }
-            }
-        );
+                    @Override
+                    public void tick(Block block, SlimefunItem item, Config data) {
+                        if (tick <= 1) {
+                            final BlockMenu blockMenu = BlockStorage.getInventory(block);
+                            addToRegistry(block);
+                            tryFetchItem(blockMenu);
+                        }
+                    }
+
+                    @Override
+                    public void uniqueTick() {
+                        tick = tick <= 1 ? tickRate.getValue() : tick - 1;
+                    }
+                },
+                new BlockBreakHandler(true, true) {
+                    @Override
+                    public void onPlayerBreak(BlockBreakEvent e, ItemStack item, List<ItemStack> drops) {
+                        BlockMenu blockMenu = BlockStorage.getInventory(e.getBlock());
+                        blockMenu.dropItems(blockMenu.getLocation(), TEST_ITEM_SLOT);
+                        blockMenu.dropItems(blockMenu.getLocation(), OUTPUT_ITEM_SLOT);
+                    }
+                });
     }
 
     private void tryFetchItem(@Nonnull BlockMenu blockMenu) {
@@ -131,13 +129,14 @@ public class NetworkExport extends NetworkObject {
             @Override
             public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
                 return NetworkSlimefunItems.NETWORK_GRID.canUse(player, false)
-                    && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+                        && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(),
+                                Interaction.INTERACT_BLOCK);
             }
 
             @Override
             public int[] getSlotsAccessedByItemTransport(ItemTransportFlow flow) {
                 if (flow == ItemTransportFlow.WITHDRAW) {
-                    return new int[]{OUTPUT_ITEM_SLOT};
+                    return new int[] { OUTPUT_ITEM_SLOT };
                 }
                 return new int[0];
             }

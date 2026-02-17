@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 
 public class NetworkImport extends NetworkObject {
 
-    private static final int[] INPUT_SLOTS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+    private static final int[] INPUT_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
     private final ItemSetting<Integer> tickRate;
 
@@ -42,30 +42,29 @@ public class NetworkImport extends NetworkObject {
         }
 
         addItemHandler(
-            new BlockTicker() {
+                new BlockTicker() {
 
-                private int tick = 1;
+                    private int tick = 1;
 
-                @Override
-                public boolean isSynchronized() {
-                    return false;
-                }
-
-                @Override
-                public void tick(Block block, SlimefunItem item, Config data) {
-                    if (tick <= 1) {
-                        final BlockMenu blockMenu = BlockStorage.getInventory(block);
-                        addToRegistry(block);
-                        tryAddItem(blockMenu);
+                    @Override
+                    public boolean isSynchronized() {
+                        return runSync();
                     }
-                }
 
-                @Override
-                public void uniqueTick() {
-                    tick = tick <= 1 ? tickRate.getValue() : tick - 1;
-                }
-            }
-        );
+                    @Override
+                    public void tick(Block block, SlimefunItem item, Config data) {
+                        if (tick <= 1) {
+                            final BlockMenu blockMenu = BlockStorage.getInventory(block);
+                            addToRegistry(block);
+                            tryAddItem(blockMenu);
+                        }
+                    }
+
+                    @Override
+                    public void uniqueTick() {
+                        tick = tick <= 1 ? tickRate.getValue() : tick - 1;
+                    }
+                });
     }
 
     private void tryAddItem(@Nonnull BlockMenu blockMenu) {
@@ -97,7 +96,8 @@ public class NetworkImport extends NetworkObject {
             @Override
             public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
                 return NetworkSlimefunItems.NETWORK_GRID.canUse(player, false)
-                    && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+                        && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(),
+                                Interaction.INTERACT_BLOCK);
             }
 
             @Override

@@ -44,38 +44,38 @@ public class NetworkController extends NetworkObject {
         addItemSetting(maxNodes);
 
         addItemHandler(
-            new BlockTicker() {
-                @Override
-                public boolean isSynchronized() {
-                    return false;
-                }
-
-                @Override
-                public void tick(Block block, SlimefunItem item, Config data) {
-
-                    if (!firstTickMap.containsKey(block.getLocation())) {
-                        onFirstTick(block, data);
-                        firstTickMap.put(block.getLocation(), true);
+                new BlockTicker() {
+                    @Override
+                    public boolean isSynchronized() {
+                        return runSync();
                     }
 
-                    addToRegistry(block);
-                    NetworkRoot networkRoot = new NetworkRoot(block.getLocation(), NodeType.CONTROLLER, maxNodes.getValue());
-                    networkRoot.addAllChildren();
+                    @Override
+                    public void tick(Block block, SlimefunItem item, Config data) {
 
-                    NodeDefinition definition = NetworkStorage.getAllNetworkObjects().get(block.getLocation());
-                    if (definition != null) {
-                        definition.setNode(networkRoot);
+                        if (!firstTickMap.containsKey(block.getLocation())) {
+                            onFirstTick(block, data);
+                            firstTickMap.put(block.getLocation(), true);
+                        }
+
+                        addToRegistry(block);
+                        NetworkRoot networkRoot = new NetworkRoot(block.getLocation(), NodeType.CONTROLLER,
+                                maxNodes.getValue());
+                        networkRoot.addAllChildren();
+
+                        NodeDefinition definition = NetworkStorage.getAllNetworkObjects().get(block.getLocation());
+                        if (definition != null) {
+                            definition.setNode(networkRoot);
+                        }
+
+                        boolean crayon = CRAYONS.contains(block.getLocation());
+                        if (crayon) {
+                            networkRoot.setDisplayParticles(true);
+                        }
+
+                        NETWORKS.put(block.getLocation(), networkRoot);
                     }
-
-                    boolean crayon = CRAYONS.contains(block.getLocation());
-                    if (crayon) {
-                        networkRoot.setDisplayParticles(true);
-                    }
-
-                    NETWORKS.put(block.getLocation(), networkRoot);
-                }
-            }
-        );
+                });
     }
 
     @Override

@@ -809,7 +809,7 @@ public class NetworkRoot extends NetworkNode {
                     blockMenu.markDirty();
 
                     // All distributed, can escape
-                    if (incomingStackAmount == 0) {
+                    if (incoming.getAmount() == 0) {
                         return;
                     }
                 }

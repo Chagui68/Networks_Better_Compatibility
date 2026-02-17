@@ -13,7 +13,6 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 
 import lombok.Getter;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -42,56 +41,55 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
     private final List<Integer> slotsToDrop = new ArrayList<>();
 
     protected static final Set<BlockFace> CHECK_FACES = Set.of(
-        BlockFace.UP,
-        BlockFace.DOWN,
-        BlockFace.NORTH,
-        BlockFace.SOUTH,
-        BlockFace.EAST,
-        BlockFace.WEST
-    );
+            BlockFace.UP,
+            BlockFace.DOWN,
+            BlockFace.NORTH,
+            BlockFace.SOUTH,
+            BlockFace.EAST,
+            BlockFace.WEST);
 
-
-    protected NetworkObject(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, NodeType type) {
+    protected NetworkObject(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe,
+            NodeType type) {
         this(itemGroup, item, recipeType, recipe, null, type);
     }
 
-    protected NetworkObject(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, ItemStack recipeOutput, NodeType type) {
+    protected NetworkObject(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe,
+            ItemStack recipeOutput, NodeType type) {
         super(itemGroup, item, recipeType, recipe, recipeOutput);
         this.nodeType = type;
         addItemHandler(
-            new BlockTicker() {
+                new BlockTicker() {
 
-                @Override
-                public boolean isSynchronized() {
-                    return runSync();
-                }
+                    @Override
+                    public boolean isSynchronized() {
+                        return runSync();
+                    }
 
-                @Override
-                public void tick(Block b, SlimefunItem item, Config data) {
-                    addToRegistry(b);
-                }
-            },
-            new BlockBreakHandler(false, false) {
-                @Override
-                @ParametersAreNonnullByDefault
-                public void onPlayerBreak(BlockBreakEvent event, ItemStack item, List<ItemStack> drops) {
-                    preBreak(event);
-                    onBreak(event);
-                }
-            },
-            new BlockPlaceHandler(false) {
-                @Override
-                public void onPlayerPlace(@Nonnull BlockPlaceEvent blockPlaceEvent) {
-                    onPlace(blockPlaceEvent);
-                }
-            },
-            new ItemUseHandler() {
-                @Override
-                public void onRightClick(PlayerRightClickEvent playerRightClickEvent) {
-                    prePlace(playerRightClickEvent);
-                }
-            }
-        );
+                    @Override
+                    public void tick(Block b, SlimefunItem item, Config data) {
+                        addToRegistry(b);
+                    }
+                },
+                new BlockBreakHandler(false, false) {
+                    @Override
+                    @ParametersAreNonnullByDefault
+                    public void onPlayerBreak(BlockBreakEvent event, ItemStack item, List<ItemStack> drops) {
+                        preBreak(event);
+                        onBreak(event);
+                    }
+                },
+                new BlockPlaceHandler(false) {
+                    @Override
+                    public void onPlayerPlace(@Nonnull BlockPlaceEvent blockPlaceEvent) {
+                        onPlace(blockPlaceEvent);
+                    }
+                },
+                new ItemUseHandler() {
+                    @Override
+                    public void onRightClick(PlayerRightClickEvent playerRightClickEvent) {
+                        prePlace(playerRightClickEvent);
+                    }
+                });
     }
 
     protected void addToRegistry(@Nonnull Block block) {
@@ -114,11 +112,11 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
                 blockMenu.dropItems(location, i);
             }
         }
-//        NetworkStorage.removeNode(location);
-//
-//        if (this.nodeType == NodeType.CONTROLLER) {
-//            NetworkController.wipeNetwork(location);
-//        }
+        // NetworkStorage.removeNode(location);
+        //
+        // if (this.nodeType == NodeType.CONTROLLER) {
+        // NetworkController.wipeNetwork(location);
+        // }
 
         BlockStorage.clearBlockInfo(location);
     }
@@ -148,7 +146,8 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
                         // First network found, store root location
                         controllerLocation = networkRoot.getController();
                     } else if (!controllerLocation.equals(networkRoot.getController())) {
-                        // Location differs from that previously recorded, would result in two controllers
+                        // Location differs from that previously recorded, would result in two
+                        // controllers
                         cancelPlace(event);
                     }
                 }
@@ -166,6 +165,6 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
     }
 
     public boolean runSync() {
-        return false;
+        return true;
     }
 }

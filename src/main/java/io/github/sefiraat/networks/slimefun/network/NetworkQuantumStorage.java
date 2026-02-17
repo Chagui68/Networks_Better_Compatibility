@@ -45,15 +45,15 @@ import java.util.Map;
 
 public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveItem {
 
-    private static final int[] SIZES = new int[]{
-        4096,
-        32768,
-        262144,
-        2097152,
-        16777216,
-        134217728,
-        1073741824,
-        Integer.MAX_VALUE
+    private static final int[] SIZES = new int[] {
+            4096,
+            32768,
+            262144,
+            2097152,
+            16777216,
+            134217728,
+            1073741824,
+            Integer.MAX_VALUE
     };
 
     public static final String BS_AMOUNT = "stored_amount";
@@ -65,38 +65,33 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
     public static final int OUTPUT_SLOT = 7;
 
     private static final ItemStack BACK_INPUT = new CustomItemStack(
-        Material.GREEN_STAINED_GLASS_PANE,
-        Theme.PASSIVE + "Input"
-    );
+            Material.GREEN_STAINED_GLASS_PANE,
+            Theme.PASSIVE + "Input");
 
     private static final ItemStack BACK_ITEM = new CustomItemStack(
-        Material.BLUE_STAINED_GLASS_PANE,
-        Theme.PASSIVE + "Item Stored"
-    );
+            Material.BLUE_STAINED_GLASS_PANE,
+            Theme.PASSIVE + "Item Stored");
 
     private static final ItemStack NO_ITEM = new CustomItemStack(
-        Material.RED_STAINED_GLASS_PANE,
-        Theme.ERROR + "No Registered Item",
-        Theme.PASSIVE + "Click the icon below while",
-        Theme.PASSIVE + "holding an item to register it."
-    );
+            Material.RED_STAINED_GLASS_PANE,
+            Theme.ERROR + "No Registered Item",
+            Theme.PASSIVE + "Click the icon below while",
+            Theme.PASSIVE + "holding an item to register it.");
 
     private static final ItemStack SET_ITEM = new CustomItemStack(
-        Material.LIME_STAINED_GLASS_PANE,
-        Theme.SUCCESS + "Set Item",
-        Theme.PASSIVE + "Drag an item on top of this pane to register it.",
-        Theme.PASSIVE + "Shift Click to change voiding"
-    );
+            Material.LIME_STAINED_GLASS_PANE,
+            Theme.SUCCESS + "Set Item",
+            Theme.PASSIVE + "Drag an item on top of this pane to register it.",
+            Theme.PASSIVE + "Shift Click to change voiding");
 
     private static final ItemStack BACK_OUTPUT = new CustomItemStack(
-        Material.ORANGE_STAINED_GLASS_PANE,
-        Theme.PASSIVE + "Output"
-    );
+            Material.ORANGE_STAINED_GLASS_PANE,
+            Theme.PASSIVE + "Output");
 
-    private static final int[] INPUT_SLOTS = new int[]{0, 2};
-    private static final int[] ITEM_SLOTS = new int[]{3, 5};
-    private static final int[] OUTPUT_SLOTS = new int[]{6, 8};
-    private static final int[] BACKGROUND_SLOTS = new int[]{9, 10, 11, 12, 14, 15, 16, 17};
+    private static final int[] INPUT_SLOTS = new int[] { 0, 2 };
+    private static final int[] ITEM_SLOTS = new int[] { 3, 5 };
+    private static final int[] OUTPUT_SLOTS = new int[] { 6, 8 };
+    private static final int[] BACKGROUND_SLOTS = new int[] { 9, 10, 11, 12, 14, 15, 16, 17 };
 
     private static final Map<Location, QuantumCache> CACHES = new HashMap<>();
 
@@ -109,7 +104,8 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
     private final List<Integer> slotsToDrop = new ArrayList<>();
     private final int maxAmount;
 
-    public NetworkQuantumStorage(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int maxAmount) {
+    public NetworkQuantumStorage(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe,
+            int maxAmount) {
         super(itemGroup, item, recipeType, recipe);
         this.maxAmount = maxAmount;
         slotsToDrop.add(INPUT_SLOT);
@@ -119,31 +115,30 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
     @Override
     public void preRegister() {
         addItemHandler(
-            new BlockTicker() {
-                @Override
-                public boolean isSynchronized() {
-                    return false;
-                }
+                new BlockTicker() {
+                    @Override
+                    public boolean isSynchronized() {
+                        return true;
+                    }
 
-                @Override
-                public void tick(Block b, SlimefunItem item, Config data) {
-                    onTick(b);
-                }
-            },
-            new BlockBreakHandler(false, false) {
-                @Override
-                @ParametersAreNonnullByDefault
-                public void onPlayerBreak(BlockBreakEvent event, ItemStack item, List<ItemStack> drops) {
-                    onBreak(event);
-                }
-            },
-            new BlockPlaceHandler(false) {
-                @Override
-                public void onPlayerPlace(@Nonnull BlockPlaceEvent event) {
-                    onPlace(event);
-                }
-            }
-        );
+                    @Override
+                    public void tick(Block b, SlimefunItem item, Config data) {
+                        onTick(b);
+                    }
+                },
+                new BlockBreakHandler(false, false) {
+                    @Override
+                    @ParametersAreNonnullByDefault
+                    public void onPlayerBreak(BlockBreakEvent event, ItemStack item, List<ItemStack> drops) {
+                        onBreak(event);
+                    }
+                },
+                new BlockPlaceHandler(false) {
+                    @Override
+                    public void onPlayerPlace(@Nonnull BlockPlaceEvent event) {
+                        onPlace(event);
+                    }
+                });
     }
 
     private void onTick(Block block) {
@@ -167,7 +162,7 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
         // Move items from the input slot into the card
         final ItemStack input = blockMenu.getItemInSlot(INPUT_SLOT);
         if (input != null && input.getType() != Material.AIR) {
-            tryInputItem(blockMenu.getLocation(), new ItemStack[]{input}, cache);
+            tryInputItem(blockMenu.getLocation(), new ItemStack[] { input }, cache);
         }
 
         // Output items
@@ -239,15 +234,16 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
 
             @Override
             public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
-                return Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+                return Slimefun.getProtectionManager().hasPermission(player, block.getLocation(),
+                        Interaction.INTERACT_BLOCK);
             }
 
             @Override
             public int[] getSlotsAccessedByItemTransport(ItemTransportFlow flow) {
                 if (flow == ItemTransportFlow.INSERT) {
-                    return new int[]{INPUT_SLOT};
+                    return new int[] { INPUT_SLOT };
                 } else if (flow == ItemTransportFlow.WITHDRAW) {
-                    return new int[]{OUTPUT_SLOT};
+                    return new int[] { OUTPUT_SLOT };
                 }
                 return new int[0];
             }
@@ -287,7 +283,8 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
         return cache;
     }
 
-    private QuantumCache createCache(@Nullable ItemStack itemStack, @Nonnull BlockMenu menu, int amount, boolean voidExcess) {
+    private QuantumCache createCache(@Nullable ItemStack itemStack, @Nonnull BlockMenu menu, int amount,
+            boolean voidExcess) {
         if (itemStack == null || itemStack.getType() == Material.AIR || isDisplayItem(itemStack)) {
             menu.addItem(ITEM_SLOT, NO_ITEM);
             return new QuantumCache(null, 0, this.maxAmount, true);
@@ -323,7 +320,8 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
                 final ItemStack itemToDrop = this.getItem().clone();
                 final ItemMeta itemMeta = itemToDrop.getItemMeta();
 
-                DataTypeMethods.setCustom(itemMeta, Keys.QUANTUM_STORAGE_INSTANCE, PersistentQuantumStorageType.TYPE, cache);
+                DataTypeMethods.setCustom(itemMeta, Keys.QUANTUM_STORAGE_INSTANCE, PersistentQuantumStorageType.TYPE,
+                        cache);
                 cache.addMetaLore(itemMeta);
                 itemToDrop.setItemMeta(itemMeta);
                 location.getWorld().dropItem(location.clone().add(0.5, 0.5, 0.5), itemToDrop);
@@ -339,7 +337,8 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
     protected void onPlace(@Nonnull BlockPlaceEvent event) {
         final ItemStack itemStack = event.getItemInHand();
         final ItemMeta itemMeta = itemStack.getItemMeta();
-        final QuantumCache cache = DataTypeMethods.getCustom(itemMeta, Keys.QUANTUM_STORAGE_INSTANCE, PersistentQuantumStorageType.TYPE);
+        final QuantumCache cache = DataTypeMethods.getCustom(itemMeta, Keys.QUANTUM_STORAGE_INSTANCE,
+                PersistentQuantumStorageType.TYPE);
 
         if (cache == null) {
             return;
@@ -372,9 +371,9 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
 
     private static boolean isBlacklisted(@Nonnull ItemStack itemStack) {
         return itemStack.getType() == Material.AIR
-            || itemStack.getType().getMaxDurability() < 0
-            || Tag.SHULKER_BOXES.isTagged(itemStack.getType())
-            || SlimefunItem.getByItem(itemStack) instanceof NetworkQuantumStorage;
+                || itemStack.getType().getMaxDurability() < 0
+                || Tag.SHULKER_BOXES.isTagged(itemStack.getType())
+                || SlimefunItem.getByItem(itemStack) instanceof NetworkQuantumStorage;
     }
 
     @ParametersAreNonnullByDefault
@@ -395,9 +394,8 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
             ItemStack fetched = cache.withdrawItem(amount);
 
             if (output != null
-                && output.getType() != Material.AIR
-                && StackUtils.itemsMatch(cache, output, true)
-            ) {
+                    && output.getType() != Material.AIR
+                    && StackUtils.itemsMatch(cache, output, true)) {
                 // We have an output item we can use also
                 if (fetched == null || fetched.getType() == Material.AIR) {
                     // Storage is totally empty - just use output slot
@@ -430,7 +428,8 @@ public class NetworkQuantumStorage extends SlimefunItem implements DistinctiveIt
             final ItemMeta itemMeta = itemStack.getItemMeta();
             final List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
             lore.add("");
-            lore.add(Theme.CLICK_INFO + "Voiding: " + Theme.PASSIVE + StringUtils.toTitleCase(String.valueOf(cache.isVoidExcess())));
+            lore.add(Theme.CLICK_INFO + "Voiding: " + Theme.PASSIVE
+                    + StringUtils.toTitleCase(String.valueOf(cache.isVoidExcess())));
             lore.add(Theme.CLICK_INFO + "Amount: " + Theme.PASSIVE + cache.getAmount());
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
