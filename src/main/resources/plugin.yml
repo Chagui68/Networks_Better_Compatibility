@@ -10,6 +10,7 @@ depend:
 softdepend:
   - InfinityExpansion
   - Netheopoiesis
+  - InfinityExpansion2
   - SlimeHUD
   - WildChests
   - WeaponsAddon
