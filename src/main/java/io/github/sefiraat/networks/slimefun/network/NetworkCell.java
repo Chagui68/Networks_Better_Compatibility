@@ -33,7 +33,7 @@ public class NetworkCell extends NetworkObject {
         super(itemGroup, item, recipeType, recipe, NodeType.CELL);
 
         for (int slot : SLOTS) {
-            this.getSlotsToDrop().add(slot);
+            this.slotsToDrop.add(slot);
         }
     }
 
@@ -49,7 +49,8 @@ public class NetworkCell extends NetworkObject {
             @Override
             public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
                 return NetworkSlimefunItems.NETWORK_CELL.canUse(player, false)
-                    && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+                        && Slimefun.getProtectionManager().hasPermission(player, block.getLocation(),
+                                Interaction.INTERACT_BLOCK);
             }
 
             @Override

@@ -61,7 +61,7 @@ public class NetworkWirelessTransmitter extends NetworkObject {
             RecipeType recipeType,
             ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe, NodeType.WIRELESS_TRANSMITTER);
-        this.getSlotsToDrop().add(TEMPLATE_SLOT);
+        this.slotsToDrop.add(TEMPLATE_SLOT);
 
         addItemHandler(
                 new BlockTicker() {

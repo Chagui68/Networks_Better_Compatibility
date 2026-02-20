@@ -38,7 +38,7 @@ public class NetworkImport extends NetworkObject {
         addItemSetting(this.tickRate);
 
         for (int inputSlot : INPUT_SLOTS) {
-            this.getSlotsToDrop().add(inputSlot);
+            this.slotsToDrop.add(inputSlot);
         }
 
         addItemHandler(

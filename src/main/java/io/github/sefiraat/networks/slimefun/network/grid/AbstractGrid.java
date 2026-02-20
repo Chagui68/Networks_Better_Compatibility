@@ -48,19 +48,19 @@ public abstract class AbstractGrid extends NetworkObject {
 
     private static final CustomItemStack PAGE_PREVIOUS_STACK = new CustomItemStack(
             Material.RED_STAINED_GLASS_PANE,
-            Theme.CLICK_INFO.getColor() + "Previous Page");
+            Theme.CLICK_INFO + "Previous Page");
 
     private static final CustomItemStack PAGE_NEXT_STACK = new CustomItemStack(
             Material.RED_STAINED_GLASS_PANE,
-            Theme.CLICK_INFO.getColor() + "Next Page");
+            Theme.CLICK_INFO + "Next Page");
 
     private static final CustomItemStack CHANGE_SORT_STACK = new CustomItemStack(
             Material.BLUE_STAINED_GLASS_PANE,
-            Theme.CLICK_INFO.getColor() + "Change Sort Order");
+            Theme.CLICK_INFO + "Change Sort Order");
 
     private static final CustomItemStack FILTER_STACK = new CustomItemStack(
             Material.NAME_TAG,
-            Theme.CLICK_INFO.getColor() + "Set Filter (Right Click to Clear)");
+            Theme.CLICK_INFO + "Set Filter (Right Click to Clear)");
 
     private static final Comparator<Map.Entry<ItemStack, Integer>> ALPHABETICAL_SORT = Comparator.comparing(
             itemStackIntegerEntry -> {
@@ -83,7 +83,7 @@ public abstract class AbstractGrid extends NetworkObject {
     protected AbstractGrid(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe, NodeType.GRID);
 
-        this.getSlotsToDrop().add(getInputSlot());
+        this.slotsToDrop.add(getInputSlot());
 
         this.tickRate = new IntRangeSetting(this, "tick_rate", 1, 1, 10);
         addItemSetting(this.tickRate);
@@ -373,7 +373,7 @@ public abstract class AbstractGrid extends NetworkObject {
         final MessageFormat format = new MessageFormat("{0}Amount: {1}{2}", Locale.ROOT);
         return List.of(
                 "",
-                format.format(new Object[] { Theme.CLICK_INFO.getColor(), Theme.PASSIVE.getColor(), amount },
+                format.format(new Object[] { Theme.CLICK_INFO, Theme.PASSIVE, amount },
                         new StringBuffer(), null).toString());
     }
 }

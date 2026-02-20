@@ -46,7 +46,7 @@ public class NetworkWirelessReceiver extends NetworkObject {
             RecipeType recipeType,
             ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe, NodeType.WIRELESS_RECEIVER);
-        this.getSlotsToDrop().add(RECEIVED_SLOT);
+        this.slotsToDrop.add(RECEIVED_SLOT);
 
         addItemHandler(
                 new BlockTicker() {

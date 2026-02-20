@@ -70,8 +70,8 @@ public class NetworkAutoCrafter extends NetworkObject {
         this.chargePerCraft = chargePerCraft;
         this.withholding = withholding;
 
-        this.getSlotsToDrop().add(BLUEPRINT_SLOT);
-        this.getSlotsToDrop().add(OUTPUT_SLOT);
+        this.slotsToDrop.add(BLUEPRINT_SLOT);
+        this.slotsToDrop.add(OUTPUT_SLOT);
 
         addItemHandler(
                 new BlockTicker() {

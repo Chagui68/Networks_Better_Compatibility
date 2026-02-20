@@ -38,7 +38,7 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
     @Getter
     private final NodeType nodeType;
     @Getter
-    private final List<Integer> slotsToDrop = new ArrayList<>();
+    protected final List<Integer> slotsToDrop = new ArrayList<>();
 
     protected static final Set<BlockFace> CHECK_FACES = Set.of(
             BlockFace.UP,
@@ -156,7 +156,7 @@ public abstract class NetworkObject extends SlimefunItem implements AdminDebugga
     }
 
     protected void cancelPlace(PlayerRightClickEvent event) {
-        event.getPlayer().sendMessage(Theme.ERROR.getColor() + "This placement would connect two controllers!");
+        event.getPlayer().sendMessage(Theme.ERROR + "This placement would connect two controllers!");
         event.cancel();
     }
 

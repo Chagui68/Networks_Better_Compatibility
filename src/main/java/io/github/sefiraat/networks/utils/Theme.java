@@ -38,29 +38,33 @@ public enum Theme {
     private final ChatColor color;
     private final String loreLine;
 
-    @ParametersAreNonnullByDefault
     Theme(ChatColor color, String loreLine) {
         this.color = color;
         this.loreLine = loreLine;
+    }
 
+    public ChatColor getColor() {
+        return color;
+    }
+
+    public String getLoreLine() {
+        return loreLine;
     }
 
     @Nonnull
     public Particle.DustOptions getDustOptions(float size) {
         return new Particle.DustOptions(
-            Color.fromRGB(
-                color.getColor().getRed(),
-                color.getColor().getGreen(),
-                color.getColor().getBlue()
-            ),
-            size
-        );
+                Color.fromRGB(
+                        color.getColor().getRed(),
+                        color.getColor().getGreen(),
+                        color.getColor().getBlue()),
+                size);
     }
 
     /**
      * Returns the name of this enum constant, as contained in the
-     * declaration.  This method may be overridden, though it typically
-     * isn't necessary or desirable.  An enum class should override this
+     * declaration. This method may be overridden, though it typically
+     * isn't necessary or desirable. An enum class should override this
      * method when a more "programmer-friendly" string form exists.
      *
      * @return the name of this enum constant
@@ -71,19 +75,24 @@ public enum Theme {
     }
 
     /**
-     * Gets a SlimefunItemStack with a pre-populated lore and name with themed colors.
+     * Gets a SlimefunItemStack with a pre-populated lore and name with themed
+     * colors.
      *
      * @param id        The ID for the new {@link SlimefunItemStack}
-     * @param itemStack The vanilla {@link ItemStack} used to base the {@link SlimefunItemStack} on
-     * @param themeType The {@link Theme} {@link ChatColor} to apply to the {@link SlimefunItemStack} name
+     * @param itemStack The vanilla {@link ItemStack} used to base the
+     *                  {@link SlimefunItemStack} on
+     * @param themeType The {@link Theme} {@link ChatColor} to apply to the
+     *                  {@link SlimefunItemStack} name
      * @param name      The name to apply to the {@link SlimefunItemStack}
-     * @param lore      The lore lines for the {@link SlimefunItemStack}. Lore is book-ended with empty strings.
+     * @param lore      The lore lines for the {@link SlimefunItemStack}. Lore is
+     *                  book-ended with empty strings.
      * @return Returns the new {@link SlimefunItemStack}
      */
     @Nonnull
     @ParametersAreNonnullByDefault
-    public static SlimefunItemStack themedSlimefunItemStack(String id, ItemStack itemStack, Theme themeType, String name, String... lore) {
-        ChatColor passiveColor = Theme.PASSIVE.getColor();
+    public static SlimefunItemStack themedSlimefunItemStack(String id, ItemStack itemStack, Theme themeType,
+            String name, String... lore) {
+        final String passiveColor = Theme.PASSIVE.toString();
         List<String> finalLore = new ArrayList<>();
         finalLore.add("");
         for (String s : lore) {
@@ -92,11 +101,10 @@ public enum Theme {
         finalLore.add("");
         finalLore.add(applyThemeToString(Theme.CLICK_INFO, themeType.getLoreLine()));
         return new SlimefunItemStack(
-            id,
-            itemStack,
-            Theme.applyThemeToString(themeType, name),
-            finalLore.toArray(new String[finalLore.size() - 1])
-        );
+                id,
+                itemStack,
+                Theme.applyThemeToString(themeType, name),
+                finalLore.toArray(new String[finalLore.size() - 1]));
     }
 
     /**
@@ -109,22 +117,24 @@ public enum Theme {
     @Nonnull
     @ParametersAreNonnullByDefault
     public static String applyThemeToString(Theme themeType, String string) {
-        return themeType.getColor() + string;
+        return themeType.toString() + string;
     }
 
     /**
      * Gets an ItemStack with a pre-populated lore and name with themed colors.
      *
      * @param material  The {@link Material} used to base the {@link ItemStack} on
-     * @param themeType The {@link Theme} {@link ChatColor} to apply to the {@link ItemStack} name
+     * @param themeType The {@link Theme} {@link ChatColor} to apply to the
+     *                  {@link ItemStack} name
      * @param name      The name to apply to the {@link ItemStack}
-     * @param lore      The lore lines for the {@link ItemStack}. Lore is book-ended with empty strings.
+     * @param lore      The lore lines for the {@link ItemStack}. Lore is book-ended
+     *                  with empty strings.
      * @return Returns the new {@link ItemStack}
      */
     @Nonnull
     @ParametersAreNonnullByDefault
     public static ItemStack themedItemStack(Material material, Theme themeType, String name, String... lore) {
-        ChatColor passiveColor = Theme.PASSIVE.getColor();
+        final String passiveColor = Theme.PASSIVE.toString();
         List<String> finalLore = new ArrayList<>();
         finalLore.add("");
         for (String s : lore) {
@@ -133,11 +143,9 @@ public enum Theme {
         finalLore.add("");
         finalLore.add(applyThemeToString(Theme.CLICK_INFO, themeType.getLoreLine()));
         return new CustomItemStack(
-            material,
-            Theme.applyThemeToString(themeType, name),
-            finalLore.toArray(new String[finalLore.size() - 1])
-        );
+                material,
+                Theme.applyThemeToString(themeType, name),
+                finalLore.toArray(new String[finalLore.size() - 1]));
     }
-
 
 }

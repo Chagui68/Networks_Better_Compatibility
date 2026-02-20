@@ -113,7 +113,7 @@ public class NetworkController extends NetworkObject {
 
     @Override
     protected void cancelPlace(PlayerRightClickEvent event) {
-        event.getPlayer().sendMessage(Theme.ERROR.getColor() + "This network already has a controller!");
+        event.getPlayer().sendMessage(Theme.ERROR + "This network already has a controller!");
         event.cancel();
     }
 

@@ -55,8 +55,8 @@ public class NetworkExport extends NetworkObject {
         this.tickRate = new IntRangeSetting(this, "tick_rate", 1, 1, 10);
         addItemSetting(this.tickRate);
 
-        this.getSlotsToDrop().add(TEST_ITEM_SLOT);
-        this.getSlotsToDrop().add(OUTPUT_ITEM_SLOT);
+        this.slotsToDrop.add(TEST_ITEM_SLOT);
+        this.slotsToDrop.add(OUTPUT_ITEM_SLOT);
 
         addItemHandler(
                 new BlockTicker() {

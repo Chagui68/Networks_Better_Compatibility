@@ -38,10 +38,11 @@ import java.util.UUID;
 
 public class NetworkControlV extends NetworkDirectional {
 
-    private static final int[] BACKGROUND_SLOTS = new int[]{
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 17, 18, 20, 22, 23, 24, 26, 27, 28, 30, 31, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44
+    private static final int[] BACKGROUND_SLOTS = new int[] {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 17, 18, 20, 22, 23, 24, 26, 27, 28, 30, 31, 33, 34, 35, 36,
+            37, 38, 39, 40, 41, 42, 43, 44
     };
-    private static final int[] TEMPLATE_BACKGROUND = new int[]{16};
+    private static final int[] TEMPLATE_BACKGROUND = new int[] { 16 };
     private static final int TEMPLATE_SLOT = 25;
     private static final int NORTH_SLOT = 11;
     private static final int SOUTH_SLOT = 29;
@@ -54,12 +55,11 @@ public class NetworkControlV extends NetworkDirectional {
     private final Set<BlockPosition> blockCache = new HashSet<>();
 
     public static final CustomItemStack TEMPLATE_BACKGROUND_STACK = new CustomItemStack(
-        Material.BLUE_STAINED_GLASS_PANE, Theme.PASSIVE + "Paste items matching template"
-    );
+            Material.BLUE_STAINED_GLASS_PANE, Theme.PASSIVE + "Paste items matching template");
 
     public NetworkControlV(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe, NodeType.PASTER);
-        this.getSlotsToDrop().add(TEMPLATE_SLOT);
+        this.slotsToDrop.add(TEMPLATE_SLOT);
     }
 
     @Override
@@ -144,11 +144,10 @@ public class NetworkControlV extends NetworkDirectional {
                 mcMMO.getPlaceStore().setTrue(targetBlock);
             }
             ParticleUtils.displayParticleRandomly(
-                LocationUtils.centre(targetBlock.getLocation()),
-                Particle.ELECTRIC_SPARK,
-                1,
-                5
-            );
+                    LocationUtils.centre(targetBlock.getLocation()),
+                    Particle.ELECTRIC_SPARK,
+                    1,
+                    5);
         });
     }
 
@@ -202,7 +201,7 @@ public class NetworkControlV extends NetworkDirectional {
 
     @Override
     public int[] getItemSlots() {
-        return new int[]{TEMPLATE_SLOT};
+        return new int[] { TEMPLATE_SLOT };
     }
 
     @Override

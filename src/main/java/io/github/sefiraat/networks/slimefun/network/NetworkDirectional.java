@@ -3,6 +3,7 @@ package io.github.sefiraat.networks.slimefun.network;
 import io.github.sefiraat.networks.NetworkStorage;
 import io.github.sefiraat.networks.network.NodeType;
 import io.github.sefiraat.networks.utils.NetworkUtils;
+import io.github.sefiraat.networks.utils.EnchantmentUtils;
 import io.github.sefiraat.networks.utils.Theme;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
@@ -347,7 +348,7 @@ public abstract class NetworkDirectional extends NetworkObject {
                         + ChatColor.stripColor(slimefunItem.getItemName()) + ")");
         final ItemMeta itemMeta = displayStack.getItemMeta();
         if (active) {
-            itemMeta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
+            itemMeta.addEnchant(EnchantmentUtils.getEnchantment("luck_of_the_sea"), 1, true);
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         itemMeta.setLore(List.of(
@@ -366,7 +367,7 @@ public abstract class NetworkDirectional extends NetworkObject {
                     Theme.PASSIVE + "Direction " + blockFace.name() + " (" + blockMaterial.name() + ")");
             final ItemMeta itemMeta = displayStack.getItemMeta();
             if (active) {
-                itemMeta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
+                itemMeta.addEnchant(EnchantmentUtils.getEnchantment("luck_of_the_sea"), 1, true);
                 itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
             itemMeta.setLore(List.of(

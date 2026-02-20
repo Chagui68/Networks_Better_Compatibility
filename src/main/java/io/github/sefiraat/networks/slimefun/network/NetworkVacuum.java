@@ -51,7 +51,7 @@ public class NetworkVacuum extends NetworkObject {
         addItemSetting(this.tickRate, this.vacuumRange);
 
         for (int inputSlot : INPUT_SLOTS) {
-            this.getSlotsToDrop().add(inputSlot);
+            this.slotsToDrop.add(inputSlot);
         }
 
         addItemHandler(
